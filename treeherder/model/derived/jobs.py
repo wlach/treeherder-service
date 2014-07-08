@@ -1299,6 +1299,12 @@ class JobsModel(TreeherderModelBase):
             unique_revision_hashes, rh_where_in
             )
 
+        if not len(result_set_ids):
+            logger.error("<><><> no reseult sets for this data.  skipping ingestion")
+            return
+        else:
+            logger.error("got result_set_ids.  proceeding for: " + self.project)
+
         job_update_placeholders = []
         job_guid_list = []
         job_guid_where_in_list = []
