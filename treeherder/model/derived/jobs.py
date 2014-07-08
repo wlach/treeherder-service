@@ -1683,7 +1683,7 @@ class JobsModel(TreeherderModelBase):
 
         # replace revision_hash with id
         if revision_hash not in result_set_ids:
-            logger.error(json.dumps(result_set_ids, indent=4))
+            logger.error(self.project + ": " + json.dumps(result_set_ids, indent=4))
 
         result_set = result_set_ids[revision_hash]
 
