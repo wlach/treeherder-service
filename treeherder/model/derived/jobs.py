@@ -1682,7 +1682,11 @@ class JobsModel(TreeherderModelBase):
         # Load job_placeholders
 
         # replace revision_hash with id
+        if revision_hash not in result_set_ids:
+            print json.dumps(result_set_ids, indent=4)
+            
         result_set = result_set_ids[revision_hash]
+
         job_placeholders[index][
             self.JOB_PH_RESULT_SET_ID] = result_set['id']
         push_timestamps[result_set['id']] = result_set['push_timestamp']
