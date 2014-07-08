@@ -1303,7 +1303,7 @@ class JobsModel(TreeherderModelBase):
             # logger.error("<><><> no reseult sets for this data.  skipping ingestion")
             return
         else:
-            logger.error("<><><> got result_set_ids.  proceeding for: " + self.project)
+            logger.info("<><><> got result_set_ids.  proceeding for: " + self.project)
 
         job_update_placeholders = []
         job_guid_list = []
