@@ -32,7 +32,6 @@ TREEHERDER_REQUEST_PROTOCOL = os.environ.get("TREEHERDER_REQUEST_PROTOCOL", "htt
 TREEHERDER_REQUEST_HOST = os.environ.get("TREEHERDER_REQUEST_HOST", "local.treeherder.mozilla.org")
 
 TREEHERDER_PERF_SERIES_TIME_RANGES = [
-    { "seconds":86400, "days":1 },
     { "seconds":604800, "days":7 },
     { "seconds":1209600, "days":14 },
     { "seconds":2592000, "days":30 },
