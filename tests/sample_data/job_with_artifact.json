@@ -1,0 +1,64 @@
+[
+    {
+        "project": "test_treeherder",
+        "job": {
+            "end_timestamp": 1410970548,
+            "submit_timestamp": 1410969113,
+            "start_timestamp": 1410969965,
+            "build_url": "http://ftp.mozilla.org/pub/mozilla.org/mobile/tinderbox-builds/mozilla-inbound-android/1410963901/fennec-35.0a1.en-US.android-arm.apk",
+            "name": "Autophone Webappstartup",
+            "option_collection": {
+                "opt": true
+            },
+            "artifacts": [
+                {
+                    "type": "json",
+                    "name": "Job Info",
+                    "blob": {
+                        "job_details": [
+                            {
+                                "content_type": "raw_html",
+                                "value": "Uncaught Device Error during test: args: adb -s HT018P800097 wait-for-device shell ps; echo rc=$?, exitcode: None, stdout: , stderr: ",
+                                "title": "Error"
+                            },
+                            {
+                                "url": "http://192.168.1.50:18000",
+                                "content_type": "link",
+                                "value": "graph",
+                                "title": "phonedash"
+                            }
+                        ]
+                    }
+                }
+            ],
+            "machine_platform": {
+                "platform": "android-2-3",
+                "os_name": "android",
+                "architecture": "arm"
+            },
+            "who": "",
+            "group_symbol": "A",
+            "reason": "",
+            "group_name": "Autophone",
+            "machine": "nexus-one-1",
+            "state": "completed",
+            "log_references": [
+
+            ],
+            "result": "exception",
+            "build_platform": {
+                "platform": "android-2-3",
+                "os_name": "android",
+                "architecture": "arm"
+            },
+            "job_symbol": "w",
+            "job_guid": "0ca6410c824e88f515eced8efe7cd83491e3921e",
+            "product_name": "fennec",
+            "desc": ""
+        },
+        "revision_hash": "605f8d3d3698718a2c62ac10c58cd95b09948588",
+        "coalesced": [
+
+        ]
+    }
+]
