@@ -29,7 +29,9 @@ Setting up Vagrant
 
     apt-get install nfs-kernel-server
 
-  **Troubleshooting**: If you encounter an error saying *"The guest machine entered an invalid state while waiting for it to boot. Valid states are 'starting, running'. The machine is in the 'poweroff' state. Please verify everything is configured properly and try again."* you should should check your host machine's BIOS's Virtualization Technology (vt-x) is enabled, then continue with ``vagrant up``.
+  **Troubleshooting**: If you encounter an error saying *"The guest machine entered an invalid state while waiting for it to boot. Valid states are 'starting, running'. The machine is in the 'poweroff' state. Please verify everything is configured properly and try again."* you should should check your host machine's virtualization technology (vt-x) is enabled in the BIOS (see this guide_), then continue with ``vagrant up``.
+
+  .. _guide http://www.sysprobs.com/disable-enable-virtualization-technology-bios
 
 * Once to this point in the installation, it will typically take 5 to 30 minutes for the vagrant up to complete, depending on your network performance.
 
