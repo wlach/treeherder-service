@@ -7,8 +7,12 @@ from django.core.management.base import (BaseCommand,
 
 from treeherder.client import (PerfherderClient,
                                PerformanceTimeInterval)
+from treeherder.model.models import Repository
 from treeherder.perfalert import (PerfDatum,
                                   TalosAnalyzer)
+from treeherder.perf.models import (PerformanceAlert,
+                                    PerformanceAlertSummary,
+                                    PerformanceSignature)
 
 
 class Command(BaseCommand):
@@ -33,7 +37,10 @@ class Command(BaseCommand):
                     help='Project to get signatures from (specify multiple time to get multiple projects'),
         make_option('--signature',
                     action='store',
-                    help='Signature hash to process, defaults to all non-subtests')
+                    help='Signature hash to process, defaults to all non-subtests'),
+        make_option('--persist',
+                    action="store_true",
+                    help="Experimental setting to persist performance alerts in database")
     )
 
     @staticmethod
@@ -65,9 +72,10 @@ class Command(BaseCommand):
         option_collection_hash = pc.get_option_collection_hash()
 
         # print csv header
-        print ','.join(["project", "platform", "signature", "series",
-                        "testrun_id", "push_timestamp", "change",
-                        "percent change", "t-value", "revision"])
+        if not options['persist']:
+            print ','.join(["project", "platform", "signature", "series",
+                            "testrun_id", "push_timestamp", "change",
+                            "percent change", "t-value", "revision"])
 
         for project in options['project']:
             if options['signature']:
@@ -105,6 +113,7 @@ class Command(BaseCommand):
 
                 ta = TalosAnalyzer()
                 ta.addData(perf_data)
+                prev = None
                 for r in ta.analyze_t():
                     if r.state == 'regression':
                         resultsets = pc.get_resultsets(project,
@@ -120,11 +129,39 @@ class Command(BaseCommand):
                         else:
                             pct_change = 0.0
                         delta = (new_value - initial_value)
-                        print ','.join(map(
-                            lambda v: str(v),
-                            [project, series_properties['machine_platform'],
-                             signature, self._get_series_description(
-                                 option_collection_hash,
-                                 series_properties),
-                             r.testrun_id, r.push_timestamp, delta,
-                             pct_change, r.t, revision[0:12]]))
+                        if options['persist']:
+                            repository = Repository.objects.get(name=project)
+                            # see if there is an alert summary for this result set /
+                            # repo combination already
+                            signature = PerformanceSignature.objects.get(
+                                repository=repository,
+                                signature_hash=signature)
+                            summary, _ = PerformanceAlertSummary.objects.get_or_create(
+                                repository=repository,
+                                result_set_id=r.testrun_id,
+                                prev_result_set_id=prev.testrun_id)
+                            alert, created = PerformanceAlert.objects.get_or_create(
+                                repository=repository,
+                                result_set_id=r.testrun_id,
+                                prev_result_set_id=prev.testrun_id,
+                                series_signature=signature,
+                                defaults={
+                                    'amount_pct': pct_change,
+                                    'amount_abs': delta,
+                                    'initial_value': initial_value,
+                                    'new_value': new_value,
+                                    't_value': r.t
+                                })
+                            if created:
+                                summary.generated_alerts.add(alert)
+                        else:
+                            print ','.join(map(
+                                lambda v: str(v),
+                                [project, series_properties['machine_platform'],
+                                 signature, self._get_series_description(
+                                    option_collection_hash,
+                                     series_properties),
+                                 r.testrun_id, r.push_timestamp, delta,
+                                 pct_change, r.t, revision[0:12]]))
+                    prev = r
+
