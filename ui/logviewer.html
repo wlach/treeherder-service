@@ -107,7 +107,13 @@
           </table>
         </div>
       </div>
-      <div class="col-md-6" lv-log-steps></div>
+      <div class="col-md-6 error-list">
+        <div class="list-group">
+          <a href="#L12" class="list-group-item list-group-item-danger" ng-repeat="error in step_data.all_errors">
+            {{error.line}}
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- Log lines -->
