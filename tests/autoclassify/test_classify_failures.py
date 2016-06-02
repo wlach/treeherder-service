@@ -4,7 +4,8 @@ from treeherder.autoclassify.detectors import (ManualDetector,
                                                TestFailureDetector)
 from treeherder.autoclassify.matchers import (CrashSignatureMatcher,
                                               PreciseTestMatcher)
-from treeherder.model.models import (ClassifiedFailure,
+from treeherder.model.models import (BugJobMap,
+                                     ClassifiedFailure,
                                      FailureMatch)
 
 from .utils import (crash_line,
@@ -101,8 +102,7 @@ def test_autoclassify_update_job_classification(activate_responses, jm, test_rep
     assert len(notes) == 1
 
     # Check that a bug isn't added by the autoclassifier
-    bugs = jm.get_bug_job_map_list(0, 100, conditions={"job_id": set([("=", job["id"])])})
-    assert len(bugs) == 0
+    assert BugJobMap.objects.filter(project_specific_id=job["id"]).count() == 0
 
 
 def test_autoclassify_no_update_job_classification(activate_responses, jm, test_repository,
