@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="alert alert-info" ng-show="!user.is_staff" role="alert">
+    This is an early demo of Infraherder, showing a summary of the total cumulative
+    amount of time on each job on try (over approx. the last 6 weeks as of
+    August 15 2016).
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Job</th>
+        <th>
+          <span uib-tooltip="Total amount of time spent on job">
+            Total time (hours)
+          </span>
+        </th>
+        <th>
+          <span uib-tooltip="Number of times this job was run">
+            # times run
+          </span>
+        </th>
+        <th>
+          <span uib-tooltip="Average duration of job">
+            Average time (min)
+          </span>
+        </th>
+        <th>
+          <span uib-tooltip="Maximum duration of job">
+            Maximum time (min)
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="cumulativeJob in cumulativeJobs">
+        <td><a href ng-click="openJobDetail(cumulativeJob)">{{cumulativeJob.name}}</a></td>
+        <td>{{cumulativeJob.total / 60.0 / 60.0|displayPrecision}}</td>
+        <td>{{cumulativeJob.jobs.length}}</td>
+        <td>{{cumulativeJob.total / cumulativeJob.jobs.length / 60.0|displayPrecision}}</td>
+        <td>{{cumulativeJob.max / 60.0|displayPrecision}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

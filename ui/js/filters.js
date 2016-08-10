@@ -164,6 +164,16 @@ treeherder.filter('getRevisionUrl', ['thServiceDomain', function(thServiceDomain
     };
 }]);
 
+treeherder.filter('displayPrecision', function() {
+    return function(input) {
+        if (isNaN(input)) {
+            return "N/A";
+        }
+
+        return parseFloat(input).toFixed(2);
+    };
+});
+
 treeherder.filter('alertStatus', [
     'phAlertSummaryResolutionMap', function(phAlertSummaryResolutionMap) {
         return function(resolutionId) {

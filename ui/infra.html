@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="infra">
+<head>
+    <meta charset="utf-8">
+    <title>Infraherder</title>
+    <!-- build:css css/infra.min.css -->
+    <link href="vendor/css/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="vendor/css/font-awesome.css" rel="stylesheet" media="screen">
+    <link href="css/treeherder-navbar.css" rel="stylesheet" media="screen">
+    <link href="vendor/css/persona-buttons.css" rel="stylesheet" media="screen">
+    <!-- endbuild -->
+    <link id="favicon" type="image/png" rel="shortcut icon" href="img/line_chart.png">
+    <style>
+    </style>
+</head>
+<body>
+  <nav id="th-global-navbar" class="navbar navbar-inverse" role="navigation">
+    <div id="th-global-navbar-top" class="navbar navbar-collapse">
+      <span class="dropdown">
+        <button id="th-logo"
+                title="Treeherder services" role="button"
+                class="btn btn-view-nav"
+                data-toggle="dropdown" data-target="#">Infraherder
+          <span class="fa fa-angle-down lightgray"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="infra-logo">
+          <li><a href="/">Treeherder</a></li>
+          <li><a href="/perf.html">Perfherder</a></li>
+        </ul>
+      </span>
+      <a ng-class="{active: $state.current.name.startsWith('last-finished')}" class="btn btn-view-nav" ui-sref="last-finished">Last finished</a>
+      <a ng-class="{active: $state.current.name.startsWith('total')}" class="btn btn-view-nav" ui-sref="total">Total</a>
+      <div class="nav navbar-nav navbar-right">
+        <!-- Persona login -->
+        <persona-buttons></persona-buttons>
+      </div>
+    </div>
+  </nav>
+  <div style="padding-top: 20px;"></div>
+  <section ui-view>
+  </section>
+
+  <!-- build:dontbuild -->
+  <script src="js/config/local.conf.js"></script>
+  <!-- endbuild -->
+
+  <!-- build:js js/infra.min.js -->
+  <script src="vendor/jquery-2.1.3.js"></script>
+  <script src="vendor/lodash.min.js"></script>
+  <script src="vendor/angular/angular.js"></script>
+  <script src="vendor/angular/angular-resource.js"></script>
+  <script src="vendor/angular/angular-cookies.js"></script>
+  <script src="vendor/angular/angular-ui-router.js"></script>
+  <script src="vendor/angular/angular-sanitize.js"></script>
+  <script src="vendor/angular-local-storage.min.js"></script>
+  <script src="vendor/ui-bootstrap-tpls-1.3.3.js"></script>
+  <script src="vendor/bootstrap.js"></script>
+  <script src="vendor/mousetrap.min.js"></script>
+  <script src="js/treeherder.js"></script>
+  <script>
+    var infra = angular.module("infra", ['ui.router', 'ui.bootstrap', 'treeherder']);
+  </script>
+  <script src="js/providers.js"></script>
+  <script src="js/values.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/services/main.js"></script>
+  <script src="js/services/log.js"></script>
+  <script src="js/models/job.js"></script>
+  <script src="js/models/resultset.js"></script>
+  <script src="js/models/user.js"></script>
+  <script src="js/controllers/infra/lastfinished.js"></script>
+  <script src="js/controllers/infra/total.js"></script>
+  <script src="js/directives/treeherder/persona.js"></script>
+  <script src="js/infra-app.js"></script>
+  <!-- endbuild -->
+
+  <script src="https://login.persona.org/include.js"></script>
+
+</body>
+</html>

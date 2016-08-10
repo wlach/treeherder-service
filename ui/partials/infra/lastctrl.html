@@ -1,0 +1,38 @@
+<div class="container-fluid">
+  <div class="alert alert-info" ng-show="!user.is_staff" role="alert">
+    This is an early demo of Infraherder, showing a summary of the last jobs to finish
+    on try (over approx. the last 6 weeks as of August 8 2016). The hypothesis is that
+    the last jobs to finish are either slow or are starved for resources.
+  </div>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Job</th>
+        <th>
+          <span uib-tooltip="Number of times this job was last to complete">
+            # times last
+          </span>
+        </th>
+        <th>
+          <span uib-tooltip="Average duration of job">
+            Average time (min)
+          </span>
+        </th>
+        <th>
+          <span uib-tooltip="Maximum duration of job">
+            Maximum time (min)
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="lastJob in lastJobs">
+        <td><a href ng-click="openLastJobDetail(lastJob)">{{lastJob.name}}</a></td>
+        <td>{{lastJob.jobs.length}}</td>
+        <td>{{lastJob.mean_elapsed/60.0|displayPrecision}}</td>
+        <td>{{lastJob.max_elapsed/60.0|displayPrecision}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

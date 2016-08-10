@@ -1,0 +1,22 @@
+<div class="modal-header">
+  <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <h4 class="modal-title">{{lastJob.name}}</h4>
+</div>
+<div class="modal-body">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Date scheduled</th>
+        <th>Wait (min)</th>
+        <th>Duration (min)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="job in lastJob.jobs">
+        <td><a href ng-click="openJob(job)">{{job.submit_timestamp}}</a></td>
+        <td>{{job.wait/60.0|displayPrecision}}</td>
+        <td>{{job.elapsed/60.0|displayPrecision}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
