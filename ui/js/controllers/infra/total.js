@@ -5,8 +5,9 @@ infra.controller('TotalCtrl', [
     'thDateFormat',
     function($state, $stateParams, $scope, $http, $uibModal, dateFilter,
              thDateFormat) {
-        $http.get('cumulative-try-jobs.json.gz').then(function(response) {
+        $http.get('cumulative-try-jobs.json').then(function(response) {
             $scope.cumulativeJobs = response.data;
+            console.log($scope.cumulativeJobs);
         });
 
         $scope.openJobDetail = function(jobDetails) {
