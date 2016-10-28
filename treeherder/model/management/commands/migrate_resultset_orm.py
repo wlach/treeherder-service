@@ -4,6 +4,8 @@ import MySQLdb
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.utils import IntegrityError
+from django.utils.encoding import (DjangoUnicodeDecodeError,
+                                   smart_text)
 
 from treeherder.etl.text import astral_filter
 from treeherder.model.models import (Commit,
@@ -19,6 +21,15 @@ class Command(BaseCommand):
 
     help = 'Migrate per-project resultset (push) and revision information to master database'
 
+    @staticmethod
+    def _get_unicode_string(author):
+        try:
+            return smart_text(author)
+        except DjangoUnicodeDecodeError:
+            # in certain annoying cases it seems like a field that should be
+            # utf-8 is specified in extended ascii, so do a conversion
+            return author.decode('iso-8859-1')
+
     def _process_push(self, c, repository, rs_id, revision_hash,
                       short_revision, long_revision, author, push_timestamp):
         # use the long revision if available, otherwise fall back to
@@ -26,7 +37,7 @@ class Command(BaseCommand):
         # but I guess you never know)
         revision = long_revision or short_revision
         if not revision:
-            print "Empty revision, skipping".format(repository)
+            print "Empty revision for result set {}, skipping".format(rs_id)
             return
         try:
             push = Push.objects.get(repository=repository,
@@ -38,7 +49,7 @@ class Command(BaseCommand):
                 repository=repository,
                 revision=revision,
                 revision_hash=revision_hash,
-                author=astral_filter(author),
+                author=self._get_unicode_string(author),
                 timestamp=datetime.datetime.fromtimestamp(push_timestamp))
 
         #
@@ -76,11 +87,12 @@ class Command(BaseCommand):
             """.format(','.join(['%s' % rev_id for rev_id in revision_ids])))
         for (revision, author, comments) in c.fetchall():
             try:
+                print author
                 Commit.objects.create(
                     push=push,
                     revision=revision,
-                    author=astral_filter(author),
-                    comments=comments)
+                    author=self._get_unicode_string(author),
+                    comments=self._get_unicode_string(comments))
             except IntegrityError:
                 # this revision already seems to exist, ok
                 pass
