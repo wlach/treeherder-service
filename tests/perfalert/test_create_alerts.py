@@ -1,9 +1,7 @@
 import datetime
 import time
 
-from tests.test_utils import create_generic_job
-from treeherder.model.models import (Job,
-                                     Push)
+from treeherder.model.models import Push
 from treeherder.perf.alerts import generate_new_alerts_in_series
 from treeherder.perf.models import (PerformanceAlert,
                                     PerformanceAlertSummary,
@@ -41,9 +39,6 @@ def _generate_performance_data(test_repository, test_perf_signature,
                 'author': 'foo@bar.com',
                 'time': datetime.datetime.fromtimestamp(base_timestamp + t)
             })
-        job = create_generic_job('abcd%s' % Job.objects.count(),
-                                 test_repository, push.id, Job.objects.count(),
-                                 generic_reference_data)
         PerformanceDatum.objects.create(
             repository=test_repository,
             result_set_id=t,
@@ -54,7 +49,7 @@ def _generate_performance_data(test_repository, test_perf_signature,
             value=v)
 
 
-def test_detect_alerts_in_series(test_project, test_repository,
+def test_detect_alerts_in_series(test_repository,
                                  failure_classifications,
                                  generic_reference_data,
                                  test_perf_signature):
@@ -98,7 +93,7 @@ def test_detect_alerts_in_series(test_project, test_repository,
 
 
 def test_detect_alerts_in_series_with_retriggers(
-        test_project, test_repository, failure_classifications,
+        test_repository, failure_classifications,
         generic_reference_data, test_perf_signature):
 
     # sometimes we detect an alert in the middle of a series
@@ -127,7 +122,7 @@ def test_detect_alerts_in_series_with_retriggers(
 
 
 def test_no_alerts_with_old_data(
-        test_project, test_repository, failure_classifications,
+        test_repository, failure_classifications,
         generic_reference_data, test_perf_signature):
     base_time = 0  # 1970, too old!
     INTERVAL = 30
@@ -145,8 +140,8 @@ def test_no_alerts_with_old_data(
 
 
 def test_custom_alert_threshold(
-        test_project, test_repository, failure_classifications,
-        generic_reference_data, test_perf_signature, jm):
+        test_repository, failure_classifications,
+        generic_reference_data, test_perf_signature):
 
     test_perf_signature.alert_threshold = 200.0
     test_perf_signature.save()
