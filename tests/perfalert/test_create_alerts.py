@@ -48,7 +48,6 @@ def _generate_performance_data(test_repository, test_perf_signature,
             repository=test_repository,
             result_set_id=t,
             push=push,
-            ds_job_id=job.id,
             signature=test_perf_signature,
             push_timestamp=datetime.datetime.utcfromtimestamp(
                 base_timestamp + t),
