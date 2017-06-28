@@ -189,6 +189,8 @@ class PerformanceAlertSummary(models.Model):
 
     last_updated = models.DateTimeField(db_index=True)
 
+    note = models.TextField()
+
     UNTRIAGED = 0
     DOWNSTREAM = 1
     REASSIGNED = 2
