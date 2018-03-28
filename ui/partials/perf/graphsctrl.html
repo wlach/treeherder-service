@@ -2,7 +2,8 @@
   <div class="ph-horizontal-layout">
     <div id="graph-chooser">
       <div ng-show="seriesList.length == 0">
-        <p>Nothing here yet</p>
+        <p ng-text-truncate="longText"
+           ng-tt-chars-threshold="40"></p>
       </div>
       <table class="table table-bordered graph-legend-table">
         <tr ng-repeat="series in seriesList">

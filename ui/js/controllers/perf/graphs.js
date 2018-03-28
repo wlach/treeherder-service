@@ -19,6 +19,7 @@ perf.controller('GraphsCtrl', [
         var availableColors = ['maroon', 'navy', 'pink', 'turquoise', 'brown',
             'red', 'green', 'blue', 'orange', 'purple'];
 
+        $scope.longText = "Lorem ipsum dolor sit amet, and a possibly long remaining text.";
         $scope.highlightedRevisions = [undefined, undefined];
         $scope.highlightAlerts = true;
         $scope.loadingGraphs = false;
